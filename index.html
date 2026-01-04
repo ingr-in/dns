@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+    <meta charset="UTF-8">
+    <title>नाम सर्वर विवरणम्</title>
+
+    <!-- React CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        p {
+            text-align: center;
+            color: #555;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #ecf0f1;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+    const nameServers = [
+        "ku.ku.ingr.in",
+        "su.su.ingr.in",
+        "love.kuku.ingr.in",
+        "love.suru.ingr.in",
+        "crush.kuku.ingr.in",
+        "crush.suru.ingr.in"
+    ];
+
+    function NameServerApp() {
+        return React.createElement(
+            "div",
+            { className: "container" },
+            React.createElement("h1", null, "नाम सर्वर विवरणम्"),
+            React.createElement(
+                "p",
+                null,
+                "अधोलिखितानि अस्य डोमेनस्य नाम-सर्वराणि सन्ति"
+            ),
+            React.createElement(
+                "ul",
+                null,
+                nameServers.map((ns, index) =>
+                    React.createElement(
+                        "li",
+                        { key: index },
+                        ns
+                    )
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "footer" },
+                "एतत् पृष्ठं DNS तथा होस्टिङ्-सूचनार्थं प्रयोज्यते"
+            )
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(NameServerApp));
+</script>
+
+</body>
+</html>
