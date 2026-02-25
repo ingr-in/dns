@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>संस्कृत-कालः - Sanskrit Time Periods</title>
+    <style>
+        body {
+            font-family: 'Devanagari', 'Nirmala UI', 'Mangal', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .time-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .period-name {
+            font-size: 36px;
+            color: #e74c3c;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        .message-box {
+            background: linear-gradient(45deg, #f3ec78, #af4261);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        
+        .time-range {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 20px;
+            color: #34495e;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .date-sanskrit {
+            font-size: 22px;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕉️ संस्कृत-कालः 🌸</h1>
+        
+        <div class="time-display" id="currentTime"></div>
+        <div class="date-sanskrit" id="sanskritDate"></div>
+        
+        <div class="period-name" id="currentPeriod"></div>
+        
+        <div class="message-box" id="sanskritMessage">
+            <!-- Message will appear here -->
+        </div>
+        
+        <div class="time-range" id="timeRange"></div>
+        
+        <div class="footer">
+            <p>दिवसस्य तथा रात्रेः काल-नामानि | Sanskrit Time Periods</p>
+            <p>ब्राह्ममुहूर्तः ४:०० – ५:३० | प्रातःकालः | पूर्वाह्णः | मध्याह्नः | अपराह्णः | सायंकालः | सन्ध्याकालः | प्रदोषः | रात्रिः | अर्धरात्रिः | निशीथः | उषाकालः</p>
+        </div>
+    </div>
+
+    <script>
+        function getSanskritTimePeriod(hours, minutes) {
+            const time = hours * 60 + minutes;
+            
+            // Time periods in minutes for comparison
+            if (time >= 240 && time < 330) return { name: "ब्राह्ममुहूर्तः", message: "सुप्रभातम्। ब्राह्ममुहूर्ते जागरणं पुण्यदायकम्।" };
+            else if (time >= 330 && time < 360) return { name: "उषाकालः", message: "सुप्रभातम्। उषाकालः प्रार्थनायाः समयः।" };
+            else if (time >= 360 && time < 420) return { name: "प्रातः कालः", message: "सुप्रभातम्। भवतः दिवसः मंगलमयः सुखदश्च भवतु।" };
+            else if (time >= 420 && time < 720) return { name: "पूर्वाह्णः", message: "शुभं दिनम्। सर्वेषु कार्येषु सिद्धिः प्राप्यताम्।" };
+            else if (time >= 720 && time < 840) return { name: "मध्याह्नः", message: "मध्याह्ने भोजनं पचनं च शुभम्।" };
+            else if (time >= 840 && time < 1020) return { name: "अपराह्णः", message: "अपराह्णे कार्यसिद्धिः भवतु।" };
+            else if (time >= 1020 && time < 1080) return { name: "सायं कालः", message: "शुभसायं। सायंकालः शान्तिमयः सुखकरश्च भवतु।" };
+            else if (time >= 1080 && time < 1110) return { name: "सन्ध्याकालः", message: "सन्ध्याकाले ध्यानं प्रार्थना च श्रेष्ठा।" };
+            else if (time >= 1110 && time < 1140) return { name: "प्रदोषः", message: "प्रदोषकाले शिवपूजनं फलदायकम्।" };
+            else if (time >= 1140 && time < 1380) return { name: "रात्रिः / निशा", message: "शुभरात्रिः। मधुराः स्वप्नाः भवन्तु।" };
+            else if (time >= 1380 && time < 1440) return { name: "अर्धरात्रिः", message: "अर्धरात्रिः। गाढनिद्रायाः समयः।" };
+            else if (time >= 0 && time < 60) return { name: "निशीथः", message: "निशीथकाले गाढनिद्रा शुभा।" };
+            else return { name: "ब्राह्ममुहूर्तः", message: "सुप्रभातम्। नवदिवसस्य आरम्भः।" };
+        }
+
+        function getSanskritDate() {
+            const date = new Date();
+            const days = ['रविवासरः', 'सोमवासरः', 'मङ्गलवासरः', 'बुधवासरः', 'गुरुवासरः', 'शुक्रवासरः', 'शनिवासरः'];
+            const months = ['चैत्रः', 'वैशाखः', 'ज्येष्ठः', 'आषाढः', 'श्रावणः', 'भाद्रपदः', 'आश्विनः', 'कार्तिकः', 'मार्गशीर्षः', 'पौषः', 'माघः', 'फाल्गुनः'];
+            
+            const day = days[date.getDay()];
+            const month = months[date.getMonth()];
+            const year = date.getFullYear() + 57; // Vikram Samvat conversion
+            
+            return `${day}, ${month} ${date.getDate()}, ${year} विक्रमसम्वत्`;
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('hi-IN', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Update digital time
+            document.getElementById('currentTime').textContent = formatTime(now);
+            
+            // Update Sanskrit date
+            document.getElementById('sanskritDate').textContent = getSanskritDate();
+            
+            // Get Sanskrit time period
+            const period = getSanskritTimePeriod(hours, minutes);
+            document.getElementById('currentPeriod').textContent = period.name;
+            
+            // Set Sanskrit message
+            document.getElementById('sanskritMessage').textContent = period.message;
+            
+            // Show time range
+            let timeRange = "";
+            if (hours >= 4 && hours < 5.5) timeRange = "ब्राह्ममुहूर्तः — प्रातः ४:०० – ५:३०";
+            else if (hours >= 5.5 && hours < 6) timeRange = "उषाकालः — प्रभातपूर्वकालः";
+            else if (hours >= 6 && hours < 7) timeRange = "प्रातः कालः — सूर्योदयात् पूर्वं";
+            else if (hours >= 7 && hours < 12) timeRange = "पूर्वाह्णः — प्रातः पश्चात्, मध्याह्नात् पूर्वम्";
+            else if (hours >= 12 && hours < 14) timeRange = "मध्याह्नः — दोपहर, मध्यदिवसः";
+            else if (hours >= 14 && hours < 17) timeRange = "अपराह्णः — मध्याह्नात् पश्चात्";
+            else if (hours >= 17 && hours < 18) timeRange = "सायं कालः — सूर्यास्तसमये";
+            else if (hours >= 18 && hours < 18.5) timeRange = "सन्ध्याकालः — दिन-रात्र्योः सङ्गमः";
+            else if (hours >= 18.5 && hours < 19) timeRange = "प्रदोषः — सायं पश्चात् अल्पकालः";
+            else if (hours >= 19 && hours < 23) timeRange = "रात्रिः / निशा — रात्रिकालः";
+            else if (hours >= 23 || hours < 1) timeRange = "अर्धरात्रिः — मध्यरात्रिः";
+            else if (hours >= 1 && hours < 4) timeRange = "निशीथः — गहनरात्रिः";
+            
+            document.getElementById('timeRange').textContent = timeRange;
+        }
+
+        // Update every second
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
+    </script>
+</body>
+</html>
