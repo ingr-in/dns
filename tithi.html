@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CORS allow karva -->
-  <meta http-equiv="Content-Security-Policy" content="connect-src 'self'
-  https://sipa.ingr.in/pages/तिथि.php;">
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://sipa.ingr.in/;">
 <title>वैदिक पंचांग 🌸</title>
   <style>
     /* ... tamaru CSS ahiya jemnu jem ... */
@@ -380,9 +379,9 @@
       document.getElementById('loading').style.display = 'block';
       document.getElementById('panchangCard').style.display = 'none';
       document.getElementById('error').style.display = 'none';
-
+const svr = window.location
       // ✅ FIXED: Relative URL vaparyo
-     fetch(`https://sipa.ingr.in/pages/तिथि.php?ajax=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`)
+     fetch(`https://sipa.ingr.in/pages/sti.php?sr=love&jaanu=${svr}&ajax=1&type=html&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`)
       .then(response => {
         if (!response.ok) throw new Error('Network error');
         return response.json();
@@ -434,4 +433,4 @@
     window.onload = fetchPanchang;
   </script>
 </body>
-</html>
+  </html>
