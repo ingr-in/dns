@@ -1,4 +1,4 @@
-<script>
+
 
 function fetchPanchang(){
 
@@ -62,4 +62,4 @@ document.getElementById("error").style.display="block";
 
 window.onload = fetchPanchang;
 
-</script>
+
