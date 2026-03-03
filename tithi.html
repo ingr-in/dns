@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CORS allow karva -->
-  <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://sipa.ingr.in/public/तिथि.php;">
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'self'
+  https://sipa.ingr.in/pages/तिथि.php;">
 <title>वैदिक पंचांग 🌸</title>
   <style>
     /* ... tamaru CSS ahiya jemnu jem ... */
@@ -381,7 +382,7 @@
       document.getElementById('error').style.display = 'none';
 
       // ✅ FIXED: Relative URL vaparyo
-     fetch(`https://sipa.ingr.in/public/तिथि.php/sti.php?ajax=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`)
+     fetch(`https://sipa.ingr.in/pages/तिथि.php/sti.php?ajax=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`)
       .then(response => {
         if (!response.ok) throw new Error('Network error');
         return response.json();
