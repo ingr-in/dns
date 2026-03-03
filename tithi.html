@@ -382,7 +382,7 @@
       document.getElementById('error').style.display = 'none';
 
       // ✅ FIXED: Relative URL vaparyo
-     fetch(`https://sipa.ingr.in/pages/तिथि.php/sti.php?ajax=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`)
+     fetch(`https://sipa.ingr.in/pages/तिथि.php?ajax=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`)
       .then(response => {
         if (!response.ok) throw new Error('Network error');
         return response.json();
