@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CORS: allow connect to localhost:8000 and self -->
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://sipa.ingr.in;">
+  <title>वैदिक पंचांग 🌸</title>
+  <style>
+    * { margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+    font-family: 'Arial', 'Noto Sans Devanagari', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    }
+    .glow{
+    text-shadow: 2px 2px 4px springgreen;
+    }
+    .container {
+    max-width: 900px;
+    margin: 0 auto;
+    }
+
+    .header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    }
+
+    .header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+    }
+
+    .controls {
+    background: rgba(255,255,255,0.95);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .location-input {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    }
+
+    .input-group {
+    flex: 1;
+    min-width: 200px;
+    }
+
+    .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    }
+
+    .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+    }
+
+    .input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    }
+
+    button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-top: 20px;
+    width: 100%;
+    }
+
+    button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .loading {
+    text-align: center;
+    padding: 50px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    display: none;
+    }
+
+    .loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+    0% { transform: rotate(0deg);
+    }
+    100% { transform: rotate(360deg);
+    }
+    }
+
+    .panchang-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: none;
+    }
+
+    .section {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+    }
+
+    .section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    }
+
+    .section h2 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    border-left: 5px solid #764ba2;
+    padding-left: 15px;
+    }
+
+    .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    }
+
+    .item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    }
+
+    .item-label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px;
+    }
+
+    .item-value {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #333;
+    }
+
+    .planet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    }
+
+    .planet-item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    }
+
+    .planet-name {
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin-bottom: 5px;
+    }
+
+    .planet-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    }
+
+    .error {
+    background: #ff4757;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+    }
+
+    .footer {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+    font-size: 0.9em;
+    }
+
+    .sanskrit-num {
+    font-family: 'Noto Sans Devanagari', serif;
+    }
+
+    .api-info {
+    background: #e8f4fd;
+    border-left: 4px solid #2196F3;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🕉️ वैदिक पंचांग 🌸</h1>
+      <p>
+        प्राचीन ज्योतिष, आधुनिक गणना
+      </p>
+    </div>
+
+    <div class="controls">
+      <div class="api-info">
+        <strong>📡 API टेस्ट:</strong>
+        <code>?ajax=1&lat=23.0225&lon=72.5714</code> - JSON रिस्पॉन्स<br>
+        <strong>📬 POST JSON:</strong>
+        <code>curl -X POST -H "Content-Type: application/json" -d '{"lat":23.0225,"lon":72.5714}' sti.php</code>
+      </div>
+
+      <div class="location-input">
+        <div class="input-group">
+          <label>🌍 अक्षांश (Latitude)</label>
+          <input type="number" id="lat" step="0.0001" value="23.0225" placeholder="जैसे: 23.0225">
+        </div>
+        <div class="input-group">
+          <label>🗺️ देशांतर (Longitude)</label>
+          <input type="number" id="lon" step="0.0001" value="72.5714" placeholder="जैसे: 72.5714">
+        </div>
+      </div>
+      <button onclick="fetchPanchang()">🔍 पंचांग देखें</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p>
+        पंचांग की गणना हो रही है... 🙏
+      </p>
+    </div>
+
+    <div class="error" id="error">
+      ⚠️ डेटा लोड करने में त्रुटि हुई। कृपया पुनः प्रयास करें।
+    </div>
+
+    <div class="panchang-card" id="panchangCard">
+      <div class="section">
+        <h2>📅 पंचांग</h2>
+        <div class="grid">
+          <div class="item">
+            <div class="item-label">
+              तिथि
+            </div>
+            <div class="item-value sanskrit-num" id="tithi"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              पक्ष
+            </div>
+            <div class="item-value" id="paksha"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              माह
+            </div>
+            <div class="item-value" id="month"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              नक्षत्र
+            </div>
+            <div class="item-value" id="nakshatra"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              योग
+            </div>
+            <div class="item-value" id="yoga"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              करण
+            </div>
+            <div class="item-value" id="karana"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>☀️ सूर्य समय</h2>
+        <div class="grid">
+          <div class="item">
+            <div class="item-label">
+              🌅 सूर्योदय
+            </div>
+            <div class="item-value sanskrit-num" id="sunrise"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              🌇 सूर्यास्त
+            </div>
+            <div class="item-value sanskrit-num" id="sunset"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🌙 चंद्र समय</h2>
+        <div class="grid">
+          <div class="item">
+            <div class="item-label">
+              🌙 चंद्रोदय
+            </div>
+            <div class="item-value sanskrit-num" id="moonrise"></div>
+          </div>
+          <div class="item">
+            <div class="item-label">
+              🌑 चंद्रास्त
+            </div>
+            <div class="item-value sanskrit-num" id="moonset"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🪐 ग्रह स्थिति (दीर्घांश)</h2>
+        <div class="planet-grid glow" id="planets"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        🕉️ ॐ नमः शिवाय 🕉️
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Ensure the URL uses proper protocol (double-checked)
+    function fetchPanchang() {
+    const lat = document.getElementById("lat").value.trim();
+    const lon = document.getElementById("lon").value.trim();
+
+    // Basic validation
+    if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
+    alert("कृपया अक्षांश और देशांतर सही दर्ज करें।");
+    return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("error").style.display = "none";
+    document.getElementById("panchangCard").style.display = "none";
+
+    // FIXED URL - removed extra parameters, using simple ajax=1
+    // FIXED URL - using relative path
+    const url = `https://sipa.ingr.in/pages/sti.php?ajax=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`;
+    fetch(url)
+    .then(res => {
+    if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+    }
+    return res.json();
+    })
+    .then(data => {
+    document.getElementById("loading").style.display = "none";
+    console.log("API response:", data);
+
+    // Check status
+    if (data.status !== "success") {
+    document.getElementById("error").style.display = "block";
+    document.getElementById("error").innerText = "⚠️ डेटा सफल नहीं हुआ: " + (data.message || "अज्ञात त्रुटि");
+    return;
+    }
+
+    // --- PANCHANG ---
+    document.getElementById("tithi").textContent = data.panchang.tithi || "—";
+    document.getElementById("paksha").textContent = data.panchang.paksha || "—";
+    document.getElementById("month").textContent = data.panchang.month || "—";
+    document.getElementById("nakshatra").textContent = data.panchang.nakshatra || "—";
+    document.getElementById("yoga").textContent = data.panchang.yoga || "—";
+    document.getElementById("karana").textContent = data.panchang.karana || "—";
+
+    // --- SUN TIMES ---
+    document.getElementById("sunrise").textContent = data.sun_times.sunrise || "—";
+    document.getElementById("sunset").textContent = data.sun_times.sunset || "—";
+
+    // --- MOON TIMES ---
+    document.getElementById("moonrise").textContent = data.moon_times.moonrise || "—";
+    document.getElementById("moonset").textContent = data.moon_times.moonset || "—";
+
+    // --- PLANET POSITIONS ---
+    const planetsDiv = document.getElementById("planets");
+    planetsDiv.innerHTML = "";
+
+    let planetData = data.planet_positions || {};
+
+    if (Object.keys(planetData).length === 0) {
+    const emptyMsg = document.createElement("div");
+    emptyMsg.className = "planet-item";
+    emptyMsg.innerHTML = `<div>🌌</div><div>कोई डेटा नहीं</div>`;
+    planetsDiv.appendChild(emptyMsg);
+    } else {
+    Object.entries(planetData).forEach(([planet, pos]) => {
+    let div = document.createElement("div");
+    div.className = "planet-item";
+    let displayPos = (typeof pos === 'number') ? pos.toFixed(2) + '°': pos;
+    div.innerHTML = `<div class="planet-name">${planet}</div><div class="planet-value">${displayPos}</div>`;
+    planetsDiv.appendChild(div);
+    });
+    }
+
+    document.getElementById("panchangCard").style.display = "block";
+    })
+    .catch(err => {
+    console.error("Fetch error:", err);
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("error").style.display = "block";
+    document.getElementById("error").innerHTML = `⚠️ डेटा लोड करने में त्रुटि: ${err.message}. कृपया सुनिश्चित करें कि सर्वर चल रहा है।`;
+    });
+    }
+    // Auto-load on page load (with default lat/lon)
+    window.onload = function() {
+    fetchPanchang();
+    };
+  </script>
+</body>
+</html>
