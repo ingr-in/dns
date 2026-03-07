@@ -7,12 +7,12 @@
   "theme_color": "#0d6efd",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "https://chitram.ingr.in/favicon_io/logov2.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "https://chitram.ingr.in/favicon_io/logov2.png",
       "sizes": "512x512",
       "type": "image/png"
     }
